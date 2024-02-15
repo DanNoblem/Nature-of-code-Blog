@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  // base: "/DanNoble-Noc/",
+  base: "/Nature-of-code-Blog/",
   build: {
     outDir: "../docs",
     rollupOptions: {
