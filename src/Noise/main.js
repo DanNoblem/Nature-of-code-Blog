@@ -88,11 +88,13 @@ const animate = () => {
   i = 0;
 
   for (let x = 0; x < 20; x++) {
-    xoff += 0.001 + origin.x;
+    xoff += 0.1 + origin.x;
+    yoff = 0;
     for (let y = 0; y < 20; y++) {
-      yoff += 0.001;
+      yoff += 0.1;
+      zoff = 0;
       for (let z = 0; z < 20; z++) {
-        zoff += 0.001;
+        zoff += 0.1;
         path[i].material.emissive.r = Math.abs(noise3D(xoff, yoff, zoff, t));
         i++;
       }

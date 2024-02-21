@@ -15,6 +15,7 @@ export default defineConfig({
         RandomWalk: resolve(__dirname, "src/Random Walk/index.html"),
         Noise: resolve(__dirname, "src/Noise/index.html"),
         Forces: resolve(__dirname, "src/Forces/index.html"),
+        Oscillation: resolve(__dirname, "src/Oscillation/index.html"),
       },
     },
   },

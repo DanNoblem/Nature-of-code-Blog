@@ -61,124 +61,53 @@ const onResize = () => {
 
 window.addEventListener("resize", onResize);
 
-//create object to store velocity and acceleration values
-class Orb {
-  constructor() {
-    this.pos = new THREE.Vector3(
-      Math.random() * 20,
-      Math.random() * 20,
-      Math.random() * 20
-    );
-    this.vel = new THREE.Vector3();
-    this.acc = new THREE.Vector3();
-    this.mass = 0;
-  }
-
-  applyForce(iF) {
-    iF.Vector3.divideScalar(this.mass);
-    this.acc.add(iF);
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-  }
-
-  attract(orb) {
-    let force = f.subVectors(this.pos, orb.pos);
-    let dist = this.pos.distanceTo(orb.pos);
-    //constrain
-    if (dist < 100) {
-      dist = 200;
-    }
-    if (dist > 1000) {
-      dist = 500;
-    }
-    let g = 10;
-    let power = (g * (this.mass * orb.mass)) / (dist * dist);
-    //apply force to vector
-    force.normalize();
-    force.multiplyScalar(power);
-    orb.applyForce(force);
-  }
-}
-
 /* 
 DRAWING//////////////////////////////////////////////////////////////////////////////
 */
 
 //Sphere rendering properties
-const sphereMaterial = new THREE.MeshToonMaterial({ color: "#FFDB58" });
+const sphereMaterial = new THREE.MeshToonMaterial({ color: "#6D9BEF" });
 // sphereMaterial.emissive.r = 200;
 const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 
 let orbs = [];
-let path = [];
+let i = 0;
 
-for (let i = 0; i < 20; i++) {
-  orbs[i] = new Orb();
-  path[i] = new THREE.Mesh(sphereGeometry, sphereMaterial.clone());
-  path[i].position.set(orbs[i].pos.x, orbs[i].pos.y, orbs[i].pos.z);
-  orbs[i].mass = Math.random() * 10;
-  scene.add(path[i]);
+for (let x = 0; x < 20; x++) {
+  orbs[x] = [];
+  for (let y = 0; y < 20; y++) {
+    orbs[x][y] = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    orbs[x][y].position.set(x * 2.5 - 15, 0, y * 2.5 - 15);
+    scene.add(orbs[x][y]);
+    i++;
+  }
 }
 
-let sun = new Orb();
-sun.mass = 20;
-const starGroup = new THREE.Group();
-let starMaterial = new THREE.MeshToonMaterial({ color: "#FFFF00" });
-let starGeometry = new THREE.TorusGeometry(10, 1, 8, 50);
-let star = new THREE.Mesh(starGeometry, starMaterial);
-star.rotateX(0.4);
-sun.pos = new THREE.Vector3(0, 0, 0);
-star.position.set(sun.pos.x, sun.pos.y, sun.pos.z);
-
-starGroup.add(star);
-scene.add(starGroup);
-let dir = 1;
-
+let wave = 0;
 const animate = (time) => {
   requestAnimationFrame(animate);
 
-  for (let i = 0; i < path.length; i++) {
-    //gravity calculation
-    //attraction
-    let f = new THREE.Vector3();
-    f.subVectors(star.position, path[i].position);
-    let dist = path[i].position.distanceTo(star.position);
-    //constrain
-    if (dist < 100) {
-      dist = 200;
+  for (let x = 0; x < 20; x++) {
+    for (let y = 0; y < 20; y++) {
+      let tempY = y;
+      if (y % 2 == 0) {
+        tempY = y; //20 - y;
+      }
+      orbs[x][y].position.y =
+        Math.sin(Math.PI * 2 * wave + x / 10 + tempY / 10) * 5;
     }
-    if (dist > 1000) {
-      dist = 500;
-    }
-
-    let g = 10;
-    let power = (g * (orbs[i].mass * sun.mass)) / (dist * dist);
-    f.normalize();
-    f.multiplyScalar(power);
-    orbs[i].acc = f.divideScalar(orbs[i].mass);
-
-    //apply force and update
-    orbs[i].vel.add(orbs[i].acc);
-
-    orbs[i].acc = new THREE.Vector3(0, 0, 0);
-
-    path[i].position.add(orbs[i].vel);
   }
-  time *= 0.001;
-
-  if (star.position.x <= -20) {
-    dir = 0.2;
-  }
-  if (star.position.x >= 20) {
-    dir = -0.2;
-  }
-
-  star.position.x += dir;
-
-  // starGroup.rotation.y = Math.PI * -0.12 * time;
-  // star.position.y = 5;
-
+  wave += 0.01;
   renderer.render(scene, camera);
 };
 
 animate();
+
+// for (let i = 0; i < 20; i++) {
+//   for (let j = 0; j < 20; j++) {
+//     let x = map(i, 0, 20, -500, 500);
+//     let y = map(j, 0, 20, -500, 500);
+//     let d = dist(x, y, particle.x, particle.y);
+//     let a = map(d, 0, 1000, 0, TWO_PI);
+//   }
+// }
