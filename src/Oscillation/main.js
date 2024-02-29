@@ -1,8 +1,6 @@
 import * as THREE from "three";
 import "./style.css";
 import { OrbitControls } from "three/addons/controls/OrbitControls";
-import { DragControls } from "three/addons/controls/DragControls.js";
-import { createNoise4D } from "simplex-noise";
 
 // app
 const app = document.querySelector("#app");
@@ -48,9 +46,6 @@ orbitControls.zoomSpeed = 0.5;
 orbitControls.minDistance = 100;
 orbitControls.maxDistance = 10000;
 orbitControls.target = new THREE.Vector3(0, 0, 0);
-
-//noise
-const noise3D = createNoise4D();
 
 // resize
 const onResize = () => {

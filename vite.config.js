@@ -16,6 +16,7 @@ export default defineConfig({
         Noise: resolve(__dirname, "src/Noise/index.html"),
         Forces: resolve(__dirname, "src/Forces/index.html"),
         Oscillation: resolve(__dirname, "src/Oscillation/index.html"),
+        Systems: resolve(__dirname, "src/Systems/index.html"),
       },
     },
   },
