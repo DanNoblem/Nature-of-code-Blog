@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "alea": "^1.0.1",
     "gsap": "^3.12.5",
     "simplex-noise": "^4.0.1",
     "three": "^0.161.0",
