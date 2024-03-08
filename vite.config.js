@@ -17,6 +17,7 @@ export default defineConfig({
         Forces: resolve(__dirname, "src/Forces/index.html"),
         Oscillation: resolve(__dirname, "src/Oscillation/index.html"),
         Systems: resolve(__dirname, "src/Systems/index.html"),
+        Simulation: resolve(__dirname, "src/Simulation/index.html"),
       },
     },
   },
