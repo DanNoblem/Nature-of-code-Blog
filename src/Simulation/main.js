@@ -131,8 +131,8 @@ window.addEventListener("click", function (e) {
 const sphereMaterial = new THREE.MeshToonMaterial({ color: "#FF9843" });
 // sphereMaterial.transparent = true;
 // sphereMaterial.opacity = 0;
-//const sphereGeometry = new THREE.SphereGeometry(0.5, 64, 64);
-const sphereGeometry = new THREE.BoxGeometry(1, 1, 1);
+const sphereGeometry = new THREE.SphereGeometry(0.5, 64, 64);
+//const sphereGeometry = new THREE.BoxGeometry(1, 1, 1);
 
 let balls = [];
 let fish = [];
