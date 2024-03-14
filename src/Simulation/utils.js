@@ -1,15 +1,16 @@
-export function getMag(vec3) {
-  let a = vec3.position.x;
-  let b = vec3.position.y;
-  let c = vec3.position.z;
+export function getMag(v) {
+  let a = v.x;
+  let b = v.y;
+  let c = v.z;
   //return Math.sqrt(a ^ (2 + b) ^ (2 + c) ^ 2);
   return Math.sqrt(a * a + b * b + c * c);
 }
 
-export function limit(vec3, value) {
-  let m = getMag(vec3);
+export function limit(v, value) {
+  let m = getMag(v);
   if (m > value) {
-    vec3.normalize();
-    vec3.mult(value);
+    v.normalize();
+    v.multiplyScalar(value);
   }
+  return v;
 }

@@ -5,6 +5,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls";
 import { DragControls } from "three/addons/controls/DragControls.js";
 import { TrailRenderer } from "./TrailRenderer.js";
 import { createNoise4D } from "simplex-noise";
+import { getMag, limit } from "./utils.js";
 import alea from "alea";
 
 /* 
@@ -117,14 +118,14 @@ window.addEventListener("keydown", function (e) {
     intersectionPoint.x,
     intersectionPoint.y,
     intersectionPoint.z,
-    100 //Mass
+    200 //Mass
   );
   Foods.push(food);
   sphereMesh.position.copy(intersectionPoint);
 });
 
 //Sphere rendering properties
-const sphereMaterial = new THREE.MeshToonMaterial({ color: "#1da2d8" });
+const sphereMaterial = new THREE.MeshToonMaterial({ color: "#fcc6c2" });
 // sphereMaterial.transparent = true;
 // sphereMaterial.opacity = 0;
 const sphereGeometry = new THREE.SphereGeometry(0.5, 64, 64);
@@ -137,7 +138,7 @@ let trails = [];
 const trailHeadGeometry = [];
 
 //create spheres
-for (let i = 0; i < 200; i++) {
+for (let i = 0; i < 100; i++) {
   fish[i] = new Orb(
     Math.random() * 1000,
     Math.random() * 1000,
@@ -192,8 +193,10 @@ function newTrail(i) {
 //Reposition self if position is too high and move somewhere else
 
 let noise4D = createNoise4D();
-let limit = 1000;
-let maxSpeed = 2;
+let climit = 1000;
+let center = new THREE.Vector3(climit, climit, climit);
+let maxSpeed = 3;
+
 const animate = () => {
   requestAnimationFrame(animate);
 
@@ -209,60 +212,45 @@ const animate = () => {
     // fish[i].applyBehaviors(Foods, noise4D);
 
     //Create boundary
-    if (fish[i].pos.x > limit) {
+    if (fish[i].pos.x > climit) {
       fish[i].pos.x = 0;
       trails[i].deactivate();
       newTrail(i);
     }
-    if (fish[i].pos.y > limit) {
+    if (fish[i].pos.y > climit) {
       fish[i].pos.y = 0;
       trails[i].deactivate();
       newTrail(i);
     }
-    if (fish[i].pos.z > limit) {
+    if (fish[i].pos.z > climit) {
       fish[i].pos.z = 0;
       trails[i].deactivate();
       newTrail(i);
     }
 
     if (fish[i].pos.x < 0) {
-      fish[i].pos.x = limit;
+      fish[i].pos.x = climit;
       trails[i].deactivate();
       newTrail(i);
     }
     if (fish[i].pos.y < 0) {
-      fish[i].pos.y = limit;
+      fish[i].pos.y = climit;
       trails[i].deactivate();
       newTrail(i);
     }
     if (fish[i].pos.z < 0) {
-      fish[i].pos.z = limit;
+      fish[i].pos.z = climit;
       trails[i].deactivate();
       newTrail(i);
     }
 
     //force field around the area
     //caculate surface of the circle and redirect if moving towards the edge
+    if (fish[i].pos.distanceTo(center) > climit) {
+    }
 
     //Limit velocity
-    if (fish[i].vel.x > maxSpeed) {
-      fish[i].vel.x = maxSpeed;
-    }
-    if (fish[i].vel.y > maxSpeed) {
-      fish[i].vel.y = maxSpeed;
-    }
-    if (fish[i].vel.z > maxSpeed) {
-      fish[i].vel.z = maxSpeed;
-    }
-    if (fish[i].vel.x < -maxSpeed) {
-      fish[i].vel.x = -maxSpeed;
-    }
-    if (fish[i].vel.y < -maxSpeed) {
-      fish[i].vel.y = -maxSpeed;
-    }
-    if (fish[i].vel.z < -maxSpeed) {
-      fish[i].vel.z = -maxSpeed;
-    }
+    limit(fish[i].vel, maxSpeed);
 
     balls[i].position.set(
       fish[i].pos.x / 10,

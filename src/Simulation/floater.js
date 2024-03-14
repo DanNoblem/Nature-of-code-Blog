@@ -88,14 +88,6 @@ export class Orb {
     force.multiplyScalar(power);
 
     // return force;
-    orb.applyForce(force);
+    orb.steer(force);
   }
-}
-
-function getMag(vec3) {
-  let a = vec3.position.x;
-  let b = vec3.position.y;
-  let c = vec3.position.z;
-
-  return Math.sqrt();
 }
